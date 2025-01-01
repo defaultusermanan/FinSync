@@ -11,10 +11,11 @@ import {connectDB} from "./db/connectDB.js";
 import passport from "passport";
 import session from "express-session";
 import connectMongo from "connect-mongodb-session";
-
+import { buildContext } from "graphql-passport";
+import { configurePassport } from "./passport/passport.config.js";
 
 dotenv.config();
-
+configurePassport();
 const app = express();
 
 const httpServer = http.createServer(app);
@@ -56,10 +57,13 @@ await server.start()
 
 app.use(
   '/',
-  cors(),
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }),
   express.json(),
   expressMiddleware(server,{
-    context: async ({ req }) => ({ req }),
+    context: async ({ req, res }) => buildContext({ req, res }),
   }),
 );
 

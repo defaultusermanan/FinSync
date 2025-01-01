@@ -35,3 +35,6 @@
 
 # "passport": "^0.7.0", "graphql-passport": "^0.6.8",
 - This the the main authetication library/ package that will be used. Since passport alone itself just provides compatibilty with restapi and since we are using graphql api we will be using graphql-passport which will make it compatible to work passport authetication with graphql.
+
+# What is "context"?
+- Context is basically an object that is shared across all the resolvers    
