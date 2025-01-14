@@ -37,4 +37,10 @@
 - This the the main authetication library/ package that will be used. Since passport alone itself just provides compatibilty with restapi and since we are using graphql api we will be using graphql-passport which will make it compatible to work passport authetication with graphql.
 
 # What is "context"?
-- Context is basically an object that is shared across all the resolvers    
+- Context is basically an object that is shared across all the resolvers   
+
+# What does this do "{authUser && <Header/>}"?
+- Wrapping the header component in authUser gives it the condition that that component can only be seen when user has logged in or else they might not be able to see.
+
+# Why we use "...inputs"?
+- In the transaction typeDef we have created input for createTransaction and UpdateTransaction and inside that we have defined numerours variable like id, usernmae etc so if we want to call all those variables with their id then we will use ...inputs which will call them altogether like we will not have to call them seperately . It is just a way to write neat and clean code.
