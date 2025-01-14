@@ -1,5 +1,9 @@
-import { Route, Routes } from "react-router-dom"
-
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
+import SignUpPage from "./pages/SignUpPage.jsx";
+import TransactionPage from "./pages/TransactionPage.jsx";
+import NotFound from "./pages/NotFound.jsx";
 function App() {
   return (
     <>
@@ -12,6 +16,6 @@ function App() {
       </Routes>
     </>
   )
-}
-
+};
+//
 export default App
