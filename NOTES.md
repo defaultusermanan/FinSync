@@ -44,3 +44,28 @@
 
 # Why we use "...inputs"?
 - In the transaction typeDef we have created input for createTransaction and UpdateTransaction and inside that we have defined numerours variable like id, usernmae etc so if we want to call all those variables with their id then we will use ...inputs which will call them altogether like we will not have to call them seperately . It is just a way to write neat and clean code.
+
+# What have we done here const categoryColorMap = {
+	saving: "from-green-700 to-green-400",
+	expense: "from-pink-800 to-pink-600",
+	investment: "from-blue-700 to-blue-400",
+	// Add more categories and corresponding color classes as needed
+};
+
+const Card = ({ cardType }) => {
+	const cardClass = categoryColorMap[cardType];}?
+
+- What have we done is we have created a const function which saves the gradient for each category like saving, expense and investment. 
+amd then the const Card will be calling the cardType and then const cardClass will basically map the color ie the categorColorMap to the cardType selected.
+The traditional method to do all this will be
+just one function
+const Card = ({cardType}) => {
+    if (cardType==="savings"){
+        cardClass = "from-green-700 to-green-400";
+        }else if(cardType ==="expense"){
+        cardClass = "from-pink-800 to-pink-600";
+    } 
+    else if(cardType === "investment"){
+        cardClass = "from-pink-800 to-pink-600";
+    }
+    }
