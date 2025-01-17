@@ -111,3 +111,23 @@ The code snippet demonstrates a method for associating gradient colors with diff
 1. **Scalability:** Adding new categories is easier as it only involves updating the `categoryColorMap` object.
 2. **Readability:** The color mappings are centralized and straightforward to understand.
 3. **Maintainability:** Reduces repetitive conditional logic, making the codebase cleaner.
+
+# What is the meaning of InMemoryCache and credentials:"include" in?
+```javascript
+const client = new ApolloClient({
+  uri : 'http://localhost:4000/graphql',
+  cache : new InMemoryCache(),
+  credentials : "include",
+});
+```
+- Uri Specifies the URL of the graphl server , Cache creates a new in-memory cache insttance which stores the results of previous queries to avoid refeteching data and credentials set to true will basically tell the client to include credentials (cookies, authentication tokens) in request to the GraphQL server.The InMemoryCache stores this data in the client's "kitchen" (memory) so that next time you make the same query (order the same burger), the client can just retrieve the data from the cache instead of sending a new request to the server. The cache is really usefull for optimizing performance.
+
+# What does the wrapping do?
+```javascript
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+```
+- Imagine you have a big library with many books. You want to make sure that all the people in your house can access the books easily. So, you create a special bookshelf that holds all the books and makes them available to everyone in the house.
+In a similar way, ApolloProvider is like a special bookshelf that holds a powerful tool called Apollo Client. This tool helps your React application fetch and manage data from a server.
+When you use ApolloProvider, you're making the Apollo Client tool available to all the components in your React application. This means that any component can use the tool to fetch and manage data.

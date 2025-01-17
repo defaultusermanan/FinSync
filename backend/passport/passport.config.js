@@ -2,7 +2,7 @@ import passport from "passport";
 import bycrypt from "bcryptjs"; // This is used for hashing the password.
 
 import User from "../models/user.model.js";
-import {GraohQLLocalStrategy, GraphQLLocalStrategy} from "graphql-passport";
+import {GraphQLLocalStrategy} from "graphql-passport";
 
 
 export const configurePassport = async() =>{
@@ -20,7 +20,7 @@ export const configurePassport = async() =>{
         }
     });
     passport.use(
-        new GraphQLLocalStrategy({passReqToCallback: true}, async(username, password, done) => {
+        new GraphQLLocalStrategy(async (username, password, done) => {
             try{
                 const user = await User.findOne({username});
                 if(!user){
@@ -31,7 +31,7 @@ export const configurePassport = async() =>{
                     throw new Error("Invalid Username or password");
                 }
                 return done(null, user);
-            }catch(err){
+            }catch (err){
                 return done(err);
             }
         })
