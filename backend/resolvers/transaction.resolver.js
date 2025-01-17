@@ -1,4 +1,4 @@
-import transaction from "../models/transaction.model.js";
+// import transaction from "../models/transaction.model.js";
 import Transaction from "../models/transaction.model.js";
 
 const transactionResolver = {
@@ -27,7 +27,7 @@ const transactionResolver = {
         // TODO => Add category Statistics Query 
     },
     Mutation: {
-        createTransaction: async(_, {input}) => {
+        createTransaction: async(_, {input}, context) => {
             try {
                 const newTransaction = new Transaction({
                     ...input, //Using ...(three dots) will basically take all the inputs which are defined in the typeDef Transaction
