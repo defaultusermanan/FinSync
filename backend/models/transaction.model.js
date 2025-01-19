@@ -33,6 +33,7 @@ const transactionSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);

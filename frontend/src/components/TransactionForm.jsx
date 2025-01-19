@@ -3,7 +3,10 @@ import { CREATE_TRANSACTION } from '../graphql/mutations/transaction.mutation';
 import { toast } from 'react-hot-toast';
 const TransactionForm = () => {
 
-	const[createTransaction,{loading}] = useMutation(CREATE_TRANSACTION);
+	const[createTransaction,{loading}] = useMutation(CREATE_TRANSACTION,{
+		refetchQueries: ["GetTransactions"],
+	});
+	// TODO => Refectch once you have created the transaction
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -110,7 +113,7 @@ const TransactionForm = () => {
 				{/* AMOUNT */}
 				<div className='w-full flex-1 mb-6 md:mb-0'>
 					<label className='block uppercase text-white text-xs font-bold mb-2' htmlFor='amount'>
-						Amount($)
+						Amount(₹)
 					</label>
 					<input
 						className='appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500'
@@ -123,39 +126,42 @@ const TransactionForm = () => {
 				</div>
 			</div>
 
+			<div className="flex flex-wrap gap-3">
 			{/* LOCATION */}
-			<div className='flex flex-wrap gap-3'>
-				<div className='w-full flex-1 mb-6 md:mb-0'>
-					<label
-						className='block uppercase tracking-wide text-white text-xs font-bold mb-2'
-						htmlFor='location'
-					>
-						Location
-					</label>
-					<input
-						className='appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white'
-						id='location'
-						name='location'
-						type='text'
-						placeholder='New York'
-					/>
-				</div>
-
-				{/* DATE */}
-				<div className='w-full flex-1'>
-					<label className='block uppercase tracking-wide text-white text-xs font-bold mb-2' htmlFor='date'>
-						Date
-					</label>
-					<input
-						type='date'
-						name='date'
-						id='date'
-						className='appearance-none block w-full bg-gray-200 text-gray-700 border  rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none
-						 focus:bg-white'
-						placeholder='Select date'
-					/>
-				</div>
+			<div className="w-full flex-1 mb-6 md:mb-0">
+				<label
+				className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+				htmlFor="location"
+				>
+				Location
+				</label>
+				<input
+				className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+				id="location"
+				name="location"
+				type="text"
+				placeholder="New York"
+				/>
 			</div>
+
+			{/* DATE */}
+			<div className="w-full flex-1">
+				<label
+				className="block uppercase tracking-wide text-white text-xs font-bold mb-2"
+				htmlFor="date"
+				>
+				Date
+				</label>
+				<input
+				type="date"
+				name="date"
+				id="date"
+				className="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-[11px] px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+				placeholder="Select date"
+				/>
+			</div>
+			</div>
+
 			{/* SUBMIT BUTTON */}
 			<button
 				className='text-white font-bold w-full rounded px-4 py-2 bg-gradient-to-br
@@ -171,3 +177,4 @@ const TransactionForm = () => {
 };
 
 export default TransactionForm;
+//3:02:57
