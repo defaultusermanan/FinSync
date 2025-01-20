@@ -131,3 +131,27 @@ const client = new ApolloClient({
 - Imagine you have a big library with many books. You want to make sure that all the people in your house can access the books easily. So, you create a special bookshelf that holds all the books and makes them available to everyone in the house.
 In a similar way, ApolloProvider is like a special bookshelf that holds a powerful tool called Apollo Client. This tool helps your React application fetch and manage data from a server.
 When you use ApolloProvider, you're making the Apollo Client tool available to all the components in your React application. This means that any component can use the tool to fetch and manage data.
+
+# What does "useParam()" do?
+```javascript
+import { useParams } from "react-router-dom";
+```
+- useParams is a hook that returns an object of the URL parameters in the current route.
+It allows you to access the parameters in the URL and use them in your component.
+For example, if the URL is http://example.com/users/123, the useParams hook will return an object like {id: '123'}.
+You can then use the id parameter in your component to fetch the user data or perform any other action.
+
+```javascript
+<Route path ="/transaction/:id" element={data.authUser ?  <TransactionPage /> : <Navigate to="/login"/>} />
+```
+As we can see that in the transaction route path we have decalared id so the useParam hook will take the id from this path and then it can be used to call data which is associated to this id.
+
+
+# How is this app superfast in terms of getting the data and other operations?
+![alt text](<Screenshot 2025-01-20 113501.png>)
+![alt text](<Screenshot 2025-01-20 113453.png>)
+
+- So our application uses the concept of caching the memory
+so in the second image we can see that when the user is in the homepage only two queries are run ie the GetAuthenticatedUser and GetTransaction($id: transactionId)
+when the user goes to update transaction page and updates the transaction and then again comes to the homepage instead of calling the query once again graphql will use the cached memory to fetch the updated data hence making it superfast and light-weight. 
+

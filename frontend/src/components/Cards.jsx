@@ -17,9 +17,11 @@ const Cards = () => {
 			{!loading && data?.transactions?.length === 0 && (
 				<div className='flex flex-col items-center w-full'>
 					<img src="/empty.gif" alt="no transaction" className='w-1/2' />
+					<br></br>
 				</div>
 			)}
 		</div>
 	);
 };
 export default Cards;
+//3:07:55
