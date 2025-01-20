@@ -155,3 +155,137 @@ As we can see that in the transaction route path we have decalared id so the use
 so in the second image we can see that when the user is in the homepage only two queries are run ie the GetAuthenticatedUser and GetTransaction($id: transactionId)
 when the user goes to update transaction page and updates the transaction and then again comes to the homepage instead of calling the query once again graphql will use the cached memory to fetch the updated data hence making it superfast and light-weight. 
 
+# How will the data be dynamically fetched and plotted in the graph on the homepage which will be different for different users?
+```javascript
+        categoryStatistics: async (_, __, context) => {
+            if (!context.getUser()) throw new Error("Unauthorized");
+            const userId = context.getUser()._id;
+            const transactions = await Transaction.find({ userId });
+            const categoryMap = {};
+            transactions.forEach((transaction) => {
+                if (!categoryMap[transaction.category]) {
+                    categoryMap[transaction.category] = 0;
+                }
+                categoryMap[transaction.category] += transaction.amount;
+            });
+            return Object.entries(categoryMap).map(([category, amount]) => ({
+                category,
+                amount
+            }));
+        },
+```
+- Firstly we have created an asynchronors function named categoryStatistic which will conatain the core logic for displaying the graph according to the different users and their transactions.
+we will use 
+```javascript
+context.getUser()
+``` 
+to check if the user is authorised/authenticated if no then we will throw error
+so inside our database the transactions will be like this
+```Javascript
+const transaction = [
+  {category:"expense",amount:50},
+  {category:"expense",amount:75},
+  {category:"investment",amount:100},
+  {category:"saving",amount:30},
+  {category:"saving",amount:20},
+];
+```
+- as we can see that we have two values for expense one for investement and two for saving 
+So what our categoryMap function will do is it will calculate the total for each cateory and return them as
+```javascript
+categoryMap = {expense: 125, investment: 100, saving: 50}
+```
+- Now these values will be further take by the graph function in HomePage.jsx 
+```Javascript
+const chartData = {}
+```
+- The value coming from categoryMap will be passed to const chartData and then the graph will be formed
+### Explanation:
+
+1. **Function Declaration**: 
+   - `categoryStatistics` is an asynchronous function that will calculate statistics based on categories for a particular user.
+
+2. **Authentication Check**:
+   - The function first checks if the user is logged in by calling `context.getUser()`. If the user is not logged in, it throws an "Unauthorized" error.
+
+3. **Fetching User Transactions**:
+   - Retrieves the `userId` from the current logged-in user and uses it to fetch all transactions from the `Transaction` model that belong to this user.
+
+4. **Category Mapping**:
+   - Initializes an empty object `categoryMap` to store the sum of transaction amounts for each category.
+   - Iterates over each transaction. For each transaction:
+     - Checks if the category already exists in `categoryMap`. If not, initializes it with `0`.
+     - Adds the transaction's amount to the corresponding category in `categoryMap`.
+
+5. **Result Transformation**:
+   - Converts `categoryMap` into an array of objects, where each object contains a `category` and its total `amount`.
+
+### Visualization Example:
+
+Suppose we have the following transactions for a user:
+
+- Transaction 1: Category: "Food", Amount: 100
+- Transaction 2: Category: "Transport", Amount: 50
+- Transaction 3: Category: "Food", Amount: 200
+
+The `categoryStatistics` function will produce the following output:
+
+```json
+[
+  { "category": "Food", "amount": 300 },
+  { "category": "Transport", "amount": 50 }
+]
+```
+
+# What to do if this becomes a large scale product then how to handle the different users and their numerours transactions?
+In the resolver file
+```JavaScript
+User:{
+      transactions:async(parent)=>{
+
+         try {
+            const transactions = await Transaction.find({userId: parent._id});
+            return transactions;
+         } catch (err) {
+            console.err("Error in user.transactions resolver: ", err);
+            throw new Error(err.message || "Internal server error.");
+         }
+      }
+   }
+```
+- This function is a resolver that fetches all the transactions associated with the user. The parent argument is the user object that the GraphQL query has already fetched and is passing down to this resolver as an argument.
+Example: If the user queries for a specific user and its transactions, the user object will be passed down to this resolver as the parent argument. This resolver will then use the userId from the parent to fetch all the transactions associated with that user.
+
+# Importance of Relationships
+
+```javascript
+export const GET_USER_AND_TRANSACTIONS = gql`
+    query GetUsersAndTransactions($userId: ID!){
+        user(userId: $userId){
+            _id
+            name
+            username
+            profilePicture
+            transactions{
+                _id
+                description
+                paymentType
+                category
+                amount
+                location
+                date
+            }
+        }
+    }
+`
+```
+- For large scale production/ if there are many users then these kind of relationships are used to get the data for specific user so that the data retrieval time becomes less. The relationship that we have created between user and its transaction in the user.TypeDef.js and user.resolver.js is the reason that we are able to call the user and its transaction together in the same query.
+This method ensures seamless data retireval and a better way to handle user traffic.
+
+# What is the need of creating User Relationships?
+![alt text](image.png)
+- As seen in the screenshot the realtionships between the user and its transaction helps to fetch all the data at once which can be used to do other tasks. In large scale applications these kind of relationship helps in faster data retrieval and hence making the application really fast.
+
+- Now as we created relationship between User and its transaction the same way we have created Relationship between the transactions and its user.
+![alt text](image-1.png)
+This relationship can be seen in the update transactions page as if there is some query in which the user is required of the specific transaction so in that case this relationship can take place.
