@@ -140,7 +140,7 @@ const TransactionForm = () => {
 				id="location"
 				name="location"
 				type="text"
-				placeholder="New York"
+				placeholder="Pune"
 				/>
 			</div>
 

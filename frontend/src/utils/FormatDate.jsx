@@ -7,8 +7,3 @@ export function formatDate(timestamp) {
     };
     return date.toLocaleString("en-US", options);
 }
-
-// Example Usage
-const timestamp = 1704067200000;
-const formattedDateTime = formatDate(timestamp);
-console.log(formattedDateTime);
